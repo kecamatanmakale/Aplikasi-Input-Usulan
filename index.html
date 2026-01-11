@@ -1,45 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Musrenbang Makale</title>
+    <meta charset="UTF-8">
+    <title>Login Musrenbang Makale 2027</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #2c7be5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 30px; border-radius: 12px; width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        select, input, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
-        button { background: #2c7be5; color: white; border: none; cursor: pointer; font-weight: bold; }
-        .logo { width: 80px; margin-bottom: 10px; }
+        .box { background: white; padding: 35px; border-radius: 15px; width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        select, input, button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: #2c7be5; color: white; border: none; cursor: pointer; font-weight: bold; margin-top: 25px; }
+        .logo { width: 90px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="box">
         <img src="Logo_Tana_Toraja.png" class="logo">
-        <h2>Musrenbang Makale</h2>
+        <h2>Musrenbang 2027</h2>
+        <p>Kecamatan Makale</p>
         <select id="user">
             <option value="">-- Pilih Wilayah --</option>
             <option value="admin">ADMIN KECAMATAN</option>
-            <option>Kelurahan Ariang</option><option>Kelurahan Batupapan</option><option>Kelurahan Bombongan</option>
-            <option>Kelurahan Botang</option><option>Kelurahan Buntu Burake</option><option>Kelurahan Kamali Pentalluan</option>
-            <option>Kelurahan Lamunan</option><option>Kelurahan Lapandan</option><option>Lembang Lea</option>
-            <option>Kelurahan Manggau</option><option>Kelurahan Pantan</option><option>Kelurahan Rante</option>
-            <option>Kelurahan Tampo Makale</option><option>Kelurahan Tarongko</option><option>Kelurahan Tondon Mamullu</option>
+            <option value="ariang">Kelurahan Ariang</option>
+            <option value="batupapan">Kelurahan Batupapan</option>
+            <option value="bombongan">Kelurahan Bombongan</option>
+            <option value="botang">Kelurahan Botang</option>
+            <option value="burake">Kelurahan Buntu Burake</option>
+            <option value="kamali">Kelurahan Kamali Pentalluan</option>
+            <option value="lamunan">Kelurahan Lamunan</option>
+            <option value="lapandan">Kelurahan Lapandan</option>
+            <option value="lea">Lembang Lea</option>
+            <option value="manggau">Kelurahan Manggau</option>
+            <option value="pantan">Kelurahan Pantan</option>
+            <option value="rante">Kelurahan Rante</option>
+            <option value="tampo">Kelurahan Tampo Makale</option>
+            <option value="tarongko">Kelurahan Tarongko</option>
+            <option value="tondon">Kelurahan Tondon Mamullu</option>
         </select>
         <input type="password" id="pass" placeholder="Password">
-        <button onclick="login()">MASUK</button>
+        <button onclick="login()">MASUK SISTEM</button>
     </div>
+
     <script>
         function login() {
             const u = document.getElementById("user").value;
             const p = document.getElementById("pass").value;
+            const text = document.getElementById("user").options[document.getElementById("user").selectedIndex].text;
+
             if(u === "admin" && p === "admin123") {
                 localStorage.setItem("role", "admin");
                 localStorage.setItem("kelurahan", "ADMIN KECAMATAN");
                 location.href = "dashboard_admin.html";
-            } else if(u && p === "makale2027") {
+            } else if(u && p === u + "2027") {
                 localStorage.setItem("role", "operator");
-                localStorage.setItem("kelurahan", u);
+                localStorage.setItem("kelurahan", text);
                 location.href = "dashboard.html";
-            } else { alert("Login Gagal!"); }
+            } else {
+                alert("Username atau Password Salah!");
+            }
         }
     </script>
 </body>

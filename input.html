@@ -2,141 +2,99 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Musrenbang Makale T.A 2027</title>
+    <title>Input Usulan</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #2c7be5 0%, #1a5bb8 100%); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-        }
-        .box { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 15px; 
-            width: 350px; 
-            text-align: center; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
-        }
-        .logo { width: 100px; margin-bottom: 15px; }
-        h2 { color: #333; margin-bottom: 5px; font-size: 22px; }
-        p { color: #666; margin-bottom: 25px; font-size: 14px; }
-        
-        select, input, button { 
-            width: 100%; 
-            padding: 12px; 
-            margin-top: 15px; 
-            border-radius: 8px; 
-            border: 1px solid #ddd; 
-            box-sizing: border-box; 
-            font-size: 15px;
-        }
-        
-        select:focus, input:focus {
-            outline: none;
-            border-color: #2c7be5;
-            box-shadow: 0 0 5px rgba(44,123,229,0.3);
-        }
-
-        button { 
-            background: #2c7be5; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: background 0.3s;
-            margin-top: 25px;
-        }
-        
-        button:hover { background: #1a5bb8; }
-        .footer { margin-top: 20px; font-size: 11px; color: #999; }
+        body { font-family: sans-serif; padding: 20px; background: #f4f7f6; }
+        .box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #1f8a50; color: white; }
     </style>
 </head>
 <body>
+    <button onclick="location.href='dashboard.html'">⬅ Kembali ke Dashboard</button>
+    <h2 id="judul">Input Usulan</h2>
 
     <div class="box">
-        <img src="Logo_Tana_Toraja.png" class="logo" alt="Logo Tana Toraja">
-        <h2>MUSRENBANG</h2>
-        <p>Kecamatan Makale T.A 2027</p>
-        
-        <select id="user">
-            <option value="">-- Pilih Akun --</option>
-            <option value="admin">ADMIN KECAMATAN</option>
-            <optgroup label="Kelurahan / Lembang">
-                <option value="ariang">Kelurahan Ariang</option>
-                <option value="batupapan">Kelurahan Batupapan</option>
-                <option value="bombongan">Kelurahan Bombongan</option>
-                <option value="botang">Kelurahan Botang</option>
-                <option value="burake">Kelurahan Buntu Burake</option>
-                <option value="kamali">Kelurahan Kamali Pentalluan</option>
-                <option value="lamunan">Kelurahan Lamunan</option>
-                <option value="lapandan">Kelurahan Lapandan</option>
-                <option value="lea">Lembang Lea</option>
-                <option value="manggau">Kelurahan Manggau</option>
-                <option value="pantan">Kelurahan Pantan</option>
-                <option value="rante">Kelurahan Rante</option>
-                <option value="tampo">Kelurahan Tampo Makale</option>
-                <option value="tarongko">Kelurahan Tarongko</option>
-                <option value="tondon">Kelurahan Tondon Mamullu</option>
-            </optgroup>
-        </select>
+        <form id="formUsulan">
+            <input type="hidden" id="rowId">
+            <label>Bidang:</label>
+            <select id="bidang" required>
+                <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
+                <option value="Sosial Budaya">Sosial Budaya</option>
+                <option value="Ekonomi">Ekonomi</option>
+            </select>
+            <input type="text" id="kegiatan" placeholder="Nama Kegiatan" required>
+            <input type="text" id="lokasi" placeholder="Lokasi Spesifik" required>
+            <input type="number" id="anggaran" placeholder="Estimasi Anggaran (Rp)" required>
+            <input type="text" id="opd" placeholder="OPD Tujuan">
+            <textarea id="keterangan" placeholder="Keterangan Tambahan"></textarea>
+            <button type="submit" id="btnProses" style="background: #1f8a50; color: white; padding: 10px 20px;">Kirim Usulan</button>
+        </form>
+    </div>
 
-        <input type="password" id="pass" placeholder="Masukkan Password">
-        
-        <button onclick="login()">MASUK KE SISTEM</button>
-
-        <div class="footer">
-            &copy; 2024 Pemerintah Kecamatan Makale
-        </div>
+    <div class="box">
+        <h3>Data Usulan Anda</h3>
+        <table id="tabelData">
+            <thead>
+                <tr>
+                    <th>Kegiatan</th><th>Anggaran</th><th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="isiTabel"></tbody>
+        </table>
     </div>
 
     <script>
-        function login() {
-            const userSelect = document.getElementById("user");
-            const username = userSelect.value;
-            const selectedText = userSelect.options[userSelect.selectedIndex].text;
-            const passwordInput = document.getElementById("pass").value;
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtwlajG20K1PJXjwrctoZFr6aNaqoq923J7cq9ybZMmyRZU4oMyTj-IBKBfD58UEM-fQ/exec";
+        const userKel = localStorage.getItem("kelurahan");
+        if(!userKel) location.href = "index.html";
+        document.getElementById("judul").innerText = "Usulan " + userKel;
 
-            if (!username) {
-                alert("Silakan pilih wilayah atau akun terlebih dahulu!");
-                return;
-            }
+        // Ambil Data
+        async function loadData() {
+            const res = await fetch(SCRIPT_URL);
+            const data = await res.json();
+            const filtered = data.filter(d => d.kelurahan === userKel);
+            let html = "";
+            filtered.forEach(d => {
+                html += `<tr>
+                    <td>${d.kegiatan}</td>
+                    <td>Rp ${Number(d.anggaran).toLocaleString()}</td>
+                    <td><button onclick="hapus('${d.timestamp}')">Hapus</button></td>
+                </tr>`;
+            });
+            document.getElementById("isiTabel").innerHTML = html;
+        }
 
-            // 1. Logika Login Admin
-            if (username === "admin") {
-                if (passwordInput === "admin123") {
-                    localStorage.setItem("role", "admin");
-                    localStorage.setItem("kelurahan", "ADMIN KECAMATAN");
-                    location.href = "dashboard_admin.html";
-                } else {
-                    alert("Password Admin Salah!");
-                }
-                return;
-            }
+        // Kirim Data
+        document.getElementById("formUsulan").onsubmit = async (e) => {
+            e.preventDefault();
+            document.getElementById("btnProses").innerText = "Sedang Mengirim...";
+            const payload = {
+                action: "insert",
+                kelurahan: userKel,
+                bidang: document.getElementById("bidang").value,
+                kegiatan: document.getElementById("kegiatan").value,
+                lokasi: document.getElementById("lokasi").value,
+                anggaran: document.getElementById("anggaran").value,
+                opd: document.getElementById("opd").value,
+                keterangan: document.getElementById("keterangan").value
+            };
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            alert("Data Berhasil Dikirim!");
+            location.reload();
+        };
 
-            // 2. Logika Login Operator Kelurahan
-            // Pola password: username + 2027 (contoh: manggau2027)
-            const correctPassword = username + "2027";
-
-            if (passwordInput === correctPassword) {
-                localStorage.setItem("role", "operator");
-                localStorage.setItem("kelurahan", selectedText);
-                location.href = "dashboard.html";
-            } else {
-                alert("Password Salah!\nPastikan password sesuai dengan akun yang dipilih.");
+        async function hapus(id) {
+            if(confirm("Hapus usulan ini?")) {
+                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({action:"delete", rowId: id}) });
+                loadData();
             }
         }
 
-        // Fitur tekan 'Enter' untuk login
-        document.getElementById("pass").addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                login();
-            }
-        });
+        loadData();
     </script>
 </body>
 </html>
