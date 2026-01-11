@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Musrenbang Makale 2027</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #2c7be5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 35px; border-radius: 15px; width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1f8a50 0%, #145a32 100%); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 40px; border-radius: 15px; width: 340px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         select, input, button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
-        button { background: #2c7be5; color: white; border: none; cursor: pointer; font-weight: bold; margin-top: 25px; }
-        .logo { width: 90px; margin-bottom: 10px; }
+        button { background: #1f8a50; color: white; border: none; cursor: pointer; font-weight: bold; margin-top: 25px; transition: 0.3s; }
+        button:hover { background: #145a32; }
+        .logo { width: 80px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="box">
-        <img src="Logo_Tana_Toraja.png" class="logo">
-        <h2>Musrenbang 2027</h2>
-        <p>Kecamatan Makale</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Logo_Tana_Toraja.png" class="logo">
+        <h2>LOGIN SISTEM</h2>
+        <p>Musrenbang T.A. 2027<br>Kecamatan Makale</p>
         <select id="user">
             <option value="">-- Pilih Wilayah --</option>
             <option value="admin">ADMIN KECAMATAN</option>
@@ -36,26 +38,22 @@
             <option value="tondon">Kelurahan Tondon Mamullu</option>
         </select>
         <input type="password" id="pass" placeholder="Password">
-        <button onclick="login()">MASUK SISTEM</button>
+        <button onclick="login()">MASUK SEKARANG</button>
     </div>
-
     <script>
         function login() {
             const u = document.getElementById("user").value;
             const p = document.getElementById("pass").value;
             const text = document.getElementById("user").options[document.getElementById("user").selectedIndex].text;
-
             if(u === "admin" && p === "admin123") {
                 localStorage.setItem("role", "admin");
                 localStorage.setItem("kelurahan", "ADMIN KECAMATAN");
-                location.href = "dashboard_admin.html";
+                window.location.href = "dashboard_admin.html";
             } else if(u && p === u + "2027") {
                 localStorage.setItem("role", "operator");
                 localStorage.setItem("kelurahan", text);
-                location.href = "dashboard.html";
-            } else {
-                alert("Username atau Password Salah!");
-            }
+                window.location.href = "dashboard.html";
+            } else { alert("Login Gagal! Gunakan password: [nama_wilayah]2027"); }
         }
     </script>
 </body>
